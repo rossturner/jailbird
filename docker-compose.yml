@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  text-generation:
+    build: 
+      context: ./skills/text-generation
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"  # HTTP
+      - "9090:9090"  # gRPC
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - JAILBIRD_PERSONA=default
+    volumes:
+      - ./skills/text-generation/src:/app/src:ro
+    depends_on:
+      - redis
+      - rabbitmq
+    networks:
+      - jailbird-network
+
+  redis:
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"
+      - "8001:8001"  # RedisInsight
+    networks:
+      - jailbird-network
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    ports:
+      - "5672:5672"   # AMQP
+      - "15672:15672" # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - jailbird-network
+
+networks:
+  jailbird-network:
+    driver: bridge

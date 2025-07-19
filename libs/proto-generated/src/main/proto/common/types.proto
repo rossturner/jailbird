@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package jailbird.common;
+
+option java_multiple_files = true;
+option java_package = "com.jailbird.common";
+option java_outer_classname = "TypesProtos";
+
+// Common data types shared across skills
+
+message PersonaInfo {
+    string persona_id = 1;
+    string name = 2;
+    map<string, string> properties = 3;
+}
+
+message Context {
+    string conversation_id = 1;
+    string user_id = 2;
+    PersonaInfo persona = 3;
+    int64 timestamp = 4;
+    map<string, string> metadata = 5;
+}
+
+message ErrorInfo {
+    string code = 1;
+    string message = 2;
+    string details = 3;
+    int64 timestamp = 4;
+}

@@ -1,0 +1,56 @@
+server:
+  port: 8080
+  # Binds to all interfaces by default - accessible from Windows and WSL
+
+spring:
+  application:
+    name: text-generation
+  profiles:
+    active: dev
+
+grpc:
+  server:
+    port: 9090
+    # Binds to all interfaces - accessible from Windows and WSL
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+jailbird:
+  persona: default
+  personas:
+    config:
+      default:
+        name: "Jailbird"
+        personality: "friendly and helpful"
+        temperature: 0.7
+        max-tokens: 150
+
+logging:
+  level:
+    com.jailbird: INFO
+    net.devh.boot.grpc: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  level:
+    com.jailbird: DEBUG
+    net.devh.boot.grpc: DEBUG
+    
+server:
+  error:
+    include-stacktrace: always
