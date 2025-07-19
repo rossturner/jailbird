@@ -98,16 +98,8 @@ jailbird/
 ├── personas/                       # Persona configuration files
 │   ├── default.yaml
 │   └── [additional personas]
-├── skills/                         # All skills (microservices)
-│   ├── text-generation/            # Starting skill
-│   ├── speech/
-│   ├── conversation/
-│   ├── memory/
-│   ├── moderation/
-│   ├── orchestrator/
-│   ├── avatar/
-│   ├── twitch/
-│   └── admin/
+├── skills/                         # Skills (microservices)
+│   └── text-generation/            # Only implemented skill
 ├── docker-compose.yml              # Production orchestration
 ├── docker-compose.override.yml     # Development with hot-reload
 ├── build.gradle.kts                # Root Gradle build
@@ -125,7 +117,7 @@ jailbird/
 plugins {
     id("java-library")
     id("com.google.protobuf") version "0.9.4"
-    id("org.springframework.boot") version "3.2.0" apply false
+    id("org.springframework.boot") version "3.2.1" apply false
     id("io.spring.dependency-management") version "1.1.4" apply false
 }
 
@@ -142,12 +134,12 @@ subprojects {
     apply(plugin = "java-library")
     
     java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     
     dependencies {
-        implementation("org.slf4j:slf4j-api:2.0.9")
+        implementation("org.slf4j:slf4j-api:2.0.10")
         testImplementation("org.junit.jupiter:junit-jupiter:5.10.1")
         testImplementation("org.testcontainers:junit-jupiter:1.19.3")
     }
@@ -209,7 +201,7 @@ tasks.register("dev") {
 
 | Layer | Technology | Purpose |
 |-------|------------|---------|
-| **Language** | Java 17+ | Modern Java with strong typing and performance |
+| **Language** | Java 21+ | Modern Java with strong typing and performance |
 | **Framework** | Spring Boot 3.2+ | Microservice framework with auto-configuration |
 | **gRPC Framework** | grpc-java + grpc-spring-boot-starter | Java gRPC with Spring Boot integration |
 | **HTTP Framework** | Spring Web MVC | REST endpoints alongside gRPC services |
@@ -422,7 +414,7 @@ services:
 - Docker Compose local development
 - Basic gRPC communication with REST endpoints
 - Spring Boot hot reload development
-- Single persona support with startup configuration
+- Simple persona system with NicolePersona default
 - Health check endpoints for all services
 
 ### Phase 2: Enhanced Features

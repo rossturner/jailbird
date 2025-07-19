@@ -22,15 +22,7 @@ management:
     health:
       show-details: when-authorized
 
-jailbird:
-  persona: default
-  personas:
-    config:
-      default:
-        name: "Jailbird"
-        personality: "friendly and helpful"
-        temperature: 0.7
-        max-tokens: 150
+# jailbird configuration removed - persona system simplified
 
 logging:
   level:

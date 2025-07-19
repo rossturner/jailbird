@@ -29,18 +29,15 @@ docker-compose up text-generation
 
 ### Testing the Service
 
-#### Health Check (HTTP)
+#### Health Check (Spring Boot Actuator)
 ```bash
-curl http://localhost:8080/api/v1/text-generation/health
+curl http://localhost:8080/actuator/health
 ```
 
 Expected response:
 ```json
 {
-  "service": "text-generation",
-  "status": "healthy",
-  "timestamp": 1234567890,
-  "version": "1.0.0"
+  "status": "UP"
 }
 ```
 
@@ -110,7 +107,7 @@ jailbird/
 │   ├── common/                     # Common utilities
 │   └── proto-generated/            # Generated gRPC code
 ├── skills/
-│   └── text-generation/            # Implemented skill
+│   └── text-generation/            # Only implemented skill
 │       ├── src/main/java/com/jailbird/textgeneration/
 │       │   ├── TextGenerationApplication.java
 │       │   ├── service/
@@ -132,8 +129,8 @@ jailbird/
 |---------|-----------|-----------|---------|
 | text-generation | 8080 | 9090 | ✅ Implemented |
 
-### Future Skills (Not Yet Implemented)
-Additional skills like speech, conversation, memory, orchestrator, avatar, twitch, and admin will be added as the project evolves.
+### Other Skills (Planned)
+Additional skills like speech, conversation, memory, orchestrator, avatar, twitch, and admin are planned for future implementation. Currently only text-generation is fully implemented.
 
 ### Infrastructure Services
 
@@ -149,7 +146,7 @@ Additional skills like speech, conversation, memory, orchestrator, avatar, twitc
 - **gRPC API** with health checks and streaming support
 - **REST API** with JSON request/response
 - **Mock LLM integration** (easily replaceable with real LLM)
-- **Persona-aware responses** based on configuration
+- **Simple persona system** with NicolePersona as default
 - **Health monitoring** with Spring Boot Actuator
 - **Unit tests** with Spring Boot Test
 
@@ -161,7 +158,7 @@ Additional skills like speech, conversation, memory, orchestrator, avatar, twitc
 
 ### 🔄 Next Steps
 - Replace mock text generation with real LLM integration
-- Add additional skills as needed (speech, conversation, memory, etc.)
+- Implement additional skills (speech, conversation, memory, orchestrator, avatar, twitch, admin)
 - Add RabbitMQ messaging between services
 - Implement avatar integration with VTube Studio
 - Add Twitch chat integration
@@ -226,7 +223,6 @@ Example integration points are ready for:
 ## Monitoring and Operations
 
 ### Health Checks
-- **Service Health**: `/api/v1/text-generation/health`
 - **Actuator Health**: `/actuator/health`
 - **gRPC Health**: `grpcurl localhost:9090 jailbird.common.HealthService/Check`
 

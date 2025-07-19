@@ -84,10 +84,10 @@ Each skill follows this Spring Boot structure:
 - **REST API**: Auto-generated with OpenAPI documentation
 - **Docker setup**: Containerization with health checks
 - **Build system**: Multi-module Gradle with hot reload
-- **Persona system**: Configuration-driven personality responses
+- **Persona system**: Simple interface-based persona system (NicolePersona default)
 
 ### 🚧 Planned/Placeholder
-- **Other skills**: admin, avatar, conversation, memory, moderation, orchestrator, speech, twitch (only build directories exist)
+- **Other skills**: admin, avatar, conversation, memory, moderation, orchestrator, speech, twitch (not yet implemented - only text-generation exists)
 - **Real LLM integration**: Currently returns mock responses
 - **RabbitMQ messaging**: Infrastructure ready but not used
 - **Memory/RAG system**: Detailed design documents exist
@@ -112,8 +112,38 @@ Each skill follows this Spring Boot structure:
 
 - **Hot reload**: Spring Boot DevTools enabled in development mode
 - **Port standardization**: HTTP (8080), gRPC (9090) for all skills
-- **Persona configuration**: Uses `JailbirdProperties` class from common library
+- **Persona system**: Uses `Persona` interface from common library (defaults to NicolePersona)
 - **Health checks**: All services expose `/actuator/health` and gRPC health service
 - **Testing**: TestContainers ready for integration tests with Redis/RabbitMQ
+
+## Simple Persona System
+
+The persona system has been simplified to a clean interface-based approach:
+
+### Using Personas in Services
+```java
+@Service  
+public class YourService {
+    @Autowired
+    private Persona persona;  // Spring injects NicolePersona by default
+    
+    public String getGreeting() {
+        return persona.getGreeting();  // "Hello! I'm Nicole, nice to meet you!"
+    }
+}
+```
+
+### Current Implementation
+- **NicolePersona**: Default persona with name "Nicole"
+- **Interface**: `com.jailbird.common.persona.Persona`
+- **No configuration needed**: Automatically available to all skills
+
+### Adding New Personas (Future)
+To add new personas, simply implement the `Persona` interface and add Spring conditional annotations:
+```java
+@Component
+@ConditionalOnProperty(name = "jailbird.persona", havingValue = "cheerful")
+public class CheerfulPersona implements Persona { ... }
+```
 
 The text-generation skill serves as the complete reference implementation for the architecture - examine it thoroughly when implementing new skills.
