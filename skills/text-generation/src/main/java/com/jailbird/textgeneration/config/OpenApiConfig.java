@@ -46,10 +46,10 @@ public class OpenApiConfig {
                                 .email("api@jailbird.dev")))
                 .servers(List.of(
                         new Server()
-                                .url("http://172.22.53.175:8080")
+                                .url("http://172.22.53.175:50008")
                                 .description("WSL Development server (accessible from Windows)"),
                         new Server()
-                                .url("http://localhost:8080")
+                                .url("http://localhost:50008")
                                 .description("Development server")));
     }
 
@@ -57,21 +57,21 @@ public class OpenApiConfig {
      * Customizes the OpenAPI spec to document the auto-generated WebFlux RouterFunction endpoints.
      * 
      * These endpoints are generated from the google.api.http annotations in text_generation.proto:
-     * - POST /api/v1/text-generation/generate
-     * - POST /api/v1/text-generation/generate-stream
-     * - GET /api/v1/text-generation/health
-     * - GET /api/v1/text-generation/models (TEST ENDPOINT for proto-first workflow)
+     * - POST /generate_text
+     * - POST /generate_text_stream
+     * - GET /health
+     * - GET /get_models (TEST ENDPOINT for proto-first workflow)
      */
     @Bean
     public OpenApiCustomizer protoGeneratedEndpointsCustomizer() {
         return openApi -> {
             // Add health endpoint - generated from proto
-            openApi.path("/api/v1/text-generation/health", new PathItem()
+            openApi.path("/health", new PathItem()
                     .get(new Operation()
                             .tags(List.of("Proto-Generated Text Generation"))
                             .summary("Service health check")
                             .description("Auto-generated from protobuf: TextGenerationService.Health\n" +
-                                       "Proto annotation: option (google.api.http) = { get: \"/api/v1/text-generation/health\" };")
+                                       "Proto annotation: option (google.api.http) = { get: \"/health\" };")
                             .responses(new ApiResponses()
                                     .addApiResponse("200", new ApiResponse()
                                             .description("Service is healthy")
@@ -91,12 +91,12 @@ public class OpenApiConfig {
                                                                     """)))))));
             
             // Add text generation endpoint - generated from proto
-            openApi.path("/api/v1/text-generation/generate", new PathItem()
+            openApi.path("/generate_text", new PathItem()
                     .post(new Operation()
                             .tags(List.of("Proto-Generated Text Generation"))
                             .summary("Generate text from prompt")
                             .description("Auto-generated from protobuf: TextGenerationService.GenerateText\n" +
-                                       "Proto annotation: option (google.api.http) = { post: \"/api/v1/text-generation/generate\" body: \"*\" };")
+                                       "Proto annotation: option (google.api.http) = { post: \"/generate_text\" body: \"*\" };")
                             .requestBody(new RequestBody()
                                     .required(true)
                                     .content(new Content()
@@ -133,12 +133,12 @@ public class OpenApiConfig {
                                                                     """)))))));
             
             // Add streaming endpoint - generated from proto
-            openApi.path("/api/v1/text-generation/generate-stream", new PathItem()
+            openApi.path("/generate_text_stream", new PathItem()
                     .post(new Operation()
                             .tags(List.of("Proto-Generated Text Generation"))
                             .summary("Generate streaming text from prompt")
                             .description("Auto-generated from protobuf: TextGenerationService.GenerateTextStream\n" +
-                                       "Proto annotation: option (google.api.http) = { post: \"/api/v1/text-generation/generate-stream\" body: \"*\" };")
+                                       "Proto annotation: option (google.api.http) = { post: \"/generate_text_stream\" body: \"*\" };")
                             .requestBody(new RequestBody()
                                     .required(true)
                                     .content(new Content()
@@ -170,12 +170,12 @@ public class OpenApiConfig {
                                                                     """)))))));
                                                                     
             // Add models endpoint - TEST ENDPOINT for proto-first workflow verification
-            openApi.path("/api/v1/text-generation/models", new PathItem()
+            openApi.path("/get_models", new PathItem()
                     .get(new Operation()
                             .tags(List.of("Proto-Generated Text Generation"))
                             .summary("Get available models - TEST ENDPOINT")
                             .description("Auto-generated from protobuf: TextGenerationService.GetModels\\n" +
-                                       "Proto annotation: option (google.api.http) = { get: \\\"/api/v1/text-generation/models\\\" };\\n" +
+                                       "Proto annotation: option (google.api.http) = { get: \\\"/get_models\\\" };\\n" +
                                        "This endpoint was added to test proto-first workflow - changes to proto automatically update REST endpoints!")
                             .responses(new ApiResponses()
                                     .addApiResponse("200", new ApiResponse()

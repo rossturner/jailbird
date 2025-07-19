@@ -31,7 +31,7 @@ docker-compose up text-generation
 
 #### Health Check (Spring Boot Actuator)
 ```bash
-curl http://localhost:8080/actuator/health
+curl http://localhost:50008/actuator/health
 ```
 
 Expected response:
@@ -43,7 +43,7 @@ Expected response:
 
 #### Text Generation (HTTP)
 ```bash
-curl -X POST http://localhost:8080/api/v1/text-generation/generate \
+curl -X POST http://localhost:50008/generate_text \
   -H "Content-Type: application/json" \
   -d '{
     "prompt": "Hello, how are you?",
@@ -64,7 +64,7 @@ Expected response:
 
 #### Spring Boot Actuator Health Check
 ```bash
-curl http://localhost:8080/actuator/health
+curl http://localhost:50008/actuator/health
 ```
 
 #### gRPC Testing
@@ -127,7 +127,7 @@ jailbird/
 
 | Service | HTTP Port | gRPC Port | Status |
 |---------|-----------|-----------|---------|
-| text-generation | 8080 | 9090 | ✅ Implemented |
+| text-generation | 50008 | 50005 | ✅ Implemented |
 
 ### Other Skills (Planned)
 Additional skills like speech, conversation, memory, orchestrator, avatar, twitch, and admin are planned for future implementation. Currently only text-generation is fully implemented.
