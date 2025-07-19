@@ -34,6 +34,13 @@ service TextGenerationService {
             get: "/api/v1/text-generation/health"
         };
     }
+    
+    // Get available models - TEST ENDPOINT for proto-first workflow
+    rpc GetModels(GetModelsRequest) returns (GetModelsResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/text-generation/models"
+        };
+    }
 }
 
 message GenerateTextRequest {
@@ -91,4 +98,21 @@ message GenerationMetadata {
     double generation_time_ms = 4;
     double tokens_per_second = 5;
     string finish_reason = 6;    // "stop", "length", "error"
+}
+
+// TEST MESSAGES for proto-first workflow verification
+message GetModelsRequest {
+    // Empty for now - could add filtering parameters later
+}
+
+message GetModelsResponse {
+    repeated ModelInfo models = 1;
+}
+
+message ModelInfo {
+    string model_id = 1;
+    string display_name = 2;
+    string description = 3;
+    bool is_available = 4;
+    map<string, string> capabilities = 5;
 }

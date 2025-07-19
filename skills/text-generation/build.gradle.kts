@@ -11,10 +11,9 @@ dependencies {
     
     // Spring Boot starters
     implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-webflux") // For reactive REST endpoints
+    implementation("org.springframework.boot:spring-boot-starter-webflux") // For auto-generated REST endpoints
     
     // gRPC
     implementation("net.devh:grpc-spring-boot-starter:${property("grpcSpringBootVersion")}")
@@ -31,8 +30,8 @@ dependencies {
     implementation("io.grpc:grpc-services:${property("grpcVersion")}")
     compileOnly("javax.annotation:javax.annotation-api:1.3.2")
     
-    // OpenAPI and Swagger UI
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+    // OpenAPI and Swagger UI for WebFlux
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0")
     
     // Development
     developmentOnly("org.springframework.boot:spring-boot-devtools")

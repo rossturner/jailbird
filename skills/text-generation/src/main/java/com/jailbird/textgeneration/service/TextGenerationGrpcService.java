@@ -127,7 +127,7 @@ public class TextGenerationGrpcService extends TextGenerationServiceGrpc.TextGen
                 .setMessage("Text Generation Service is healthy")
                 .setTimestamp(System.currentTimeMillis())
                 .putMetadata("service", "text-generation")
-                .putMetadata("version", "0.1.0")
+                .putMetadata("version", "1.0.0")
                 .build();
             
             responseObserver.onNext(response);

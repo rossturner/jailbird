@@ -40,7 +40,7 @@ Expected response:
   "service": "text-generation",
   "status": "healthy",
   "timestamp": 1234567890,
-  "version": "0.1.0"
+  "version": "1.0.0"
 }
 ```
 
