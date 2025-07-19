@@ -28,11 +28,11 @@ RUN chmod +x gradlew
 RUN ./gradlew build -x test
 
 # Expose ports
-EXPOSE 8080 9090
+EXPOSE 50008 50005
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8080/actuator/health || exit 1
+  CMD curl -f http://localhost:50008/actuator/health || exit 1
 
 # Run the application
 CMD ["./gradlew", "bootRun"]

@@ -35,15 +35,15 @@ cd skills/text-generation && ./gradlew bootRun
 ### Testing Endpoints
 ```bash
 # Health check (Spring Boot Actuator)
-curl http://localhost:8080/actuator/health
+curl http://localhost:50008/actuator/health
 
 # Text generation via REST
-curl -X POST http://localhost:8080/api/v1/text-generation/generate \
+curl -X POST http://localhost:50008/api/v1/text-generation/generate \
   -H "Content-Type: application/json" \
   -d '{"prompt": "Hello", "context": {"userId": "test"}}'
 
 # gRPC health check
-grpcurl -plaintext localhost:9090 jailbird.common.HealthService/Check
+grpcurl -plaintext localhost:50005 grpc.health.v1.Health/Check
 ```
 
 ## Architecture Overview
@@ -111,10 +111,27 @@ Each skill follows this Spring Boot structure:
 ## Development Notes
 
 - **Hot reload**: Spring Boot DevTools enabled in development mode
-- **Port standardization**: HTTP (8080), gRPC (9090) for all skills
+- **Port allocation**: Uses 50000-59999 range with consistent endings (HTTP ends in 8, gRPC ends in 5)
 - **Persona system**: Uses `Persona` interface from common library (defaults to NicolePersona)
 - **Health checks**: All services expose `/actuator/health` and gRPC health service
 - **Testing**: TestContainers ready for integration tests with Redis/RabbitMQ
+- **Dependency Injection**: Use constructor injection instead of field injection for better testability and immutability
+
+### Port Allocation Scheme
+
+| Skill | HTTP Port | gRPC Port | Purpose |
+|-------|-----------|-----------|---------|
+| **text-generation** | 50008 | 50005 | Text/content generation |
+| **speech** | 50018 | 50015 | Text-to-speech/speech-to-text |
+| **memory** | 50028 | 50025 | RAG and conversation memory |
+| **avatar** | 50038 | 50035 | Avatar control and animation |
+| **conversation** | 50048 | 50045 | Conversation flow management |
+| **moderation** | 50058 | 50055 | Content moderation and safety |
+| **twitch** | 50068 | 50065 | Twitch integration |
+| **orchestrator** | 50078 | 50075 | Main orchestrator service |
+| **admin** | 50088 | 50085 | Admin dashboard and monitoring |
+
+**Port Pattern**: All HTTP ports end in **8**, all gRPC ports end in **5** (10-port increments)
 
 ## Simple Persona System
 
@@ -124,8 +141,11 @@ The persona system has been simplified to a clean interface-based approach:
 ```java
 @Service  
 public class YourService {
-    @Autowired
-    private Persona persona;  // Spring injects NicolePersona by default
+    private final Persona persona;  // Constructor injection (preferred)
+    
+    public YourService(Persona persona) {
+        this.persona = persona;  // Spring injects NicolePersona by default
+    }
     
     public String getGreeting() {
         return persona.getGreeting();  // "Hello! I'm Nicole, nice to meet you!"

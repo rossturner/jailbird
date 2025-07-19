@@ -11,7 +11,6 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @GrpcService
@@ -20,8 +19,11 @@ public class TextGenerationGrpcService extends TextGenerationServiceGrpc.TextGen
 
     private static final Logger log = LoggerFactory.getLogger(TextGenerationGrpcService.class);
 
-    @Autowired
-    private TextGenerationBusinessLogic businessLogic;
+    private final TextGenerationBusinessLogic businessLogic;
+
+    public TextGenerationGrpcService(TextGenerationBusinessLogic businessLogic) {
+        this.businessLogic = businessLogic;
+    }
 
     @Override
     public void generateText(GenerateTextRequest request,

@@ -32,23 +32,14 @@ protobuf {
     }
 }
 
-// Copy proto files from root to this module for generation
-val copyProtos = tasks.register<Copy>("copyProtos") {
-    from("${rootProject.projectDir}/proto")
-    into("${project.projectDir}/src/main/proto")
-}
-
-tasks.named("generateProto") {
-    dependsOn(copyProtos)
-}
-
-tasks.named("processResources") {
-    dependsOn(copyProtos)
-}
-
-// Clean up copied protos
-tasks.named("clean") {
-    doLast {
-        delete("${project.projectDir}/src/main/proto")
+// Configure proto source directories
+sourceSets {
+    main {
+        proto {
+            srcDir("${rootProject.projectDir}/proto")
+        }
     }
 }
+
+// Proto files are now referenced directly from the root proto directory
+// No copying needed - sourceSets configuration handles this

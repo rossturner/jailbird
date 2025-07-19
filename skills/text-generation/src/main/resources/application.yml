@@ -1,6 +1,6 @@
 server:
-  port: 8080
-  # Binds to all interfaces by default - accessible from Windows and WSL
+  port: 50008
+  # HTTP port for text-generation skill (all HTTP ports end in 8)
 
 spring:
   application:
@@ -10,8 +10,8 @@ spring:
 
 grpc:
   server:
-    port: 9090
-    # Binds to all interfaces - accessible from Windows and WSL
+    port: 50005
+    # gRPC port for text-generation skill (all gRPC ports end in 5)
 
 management:
   endpoints:
