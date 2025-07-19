@@ -15,7 +15,7 @@ service TextGenerationService {
     // Generate text based on prompt and context
     rpc GenerateText(GenerateTextRequest) returns (GenerateTextResponse) {
         option (google.api.http) = {
-            post: "/api/v1/text-generation/generate"
+            post: "/generate_text"
             body: "*"
         };
     }
@@ -23,7 +23,7 @@ service TextGenerationService {
     // Stream text generation for real-time responses
     rpc GenerateTextStream(GenerateTextRequest) returns (stream GenerateTextResponse) {
         option (google.api.http) = {
-            post: "/api/v1/text-generation/generate-stream"
+            post: "/generate_text_stream"
             body: "*"
         };
     }
@@ -31,14 +31,14 @@ service TextGenerationService {
     // Health check
     rpc Health(jailbird.common.HealthCheckRequest) returns (jailbird.common.HealthCheckResponse) {
         option (google.api.http) = {
-            get: "/api/v1/text-generation/health"
+            get: "/health"
         };
     }
     
     // Get available models - TEST ENDPOINT for proto-first workflow
     rpc GetModels(GetModelsRequest) returns (GetModelsResponse) {
         option (google.api.http) = {
-            get: "/api/v1/text-generation/models"
+            get: "/get_models"
         };
     }
 }

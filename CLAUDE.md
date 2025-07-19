@@ -37,10 +37,16 @@ cd skills/text-generation && ./gradlew bootRun
 # Health check (Spring Boot Actuator)
 curl http://localhost:50008/actuator/health
 
-# Text generation via REST
-curl -X POST http://localhost:50008/api/v1/text-generation/generate \
+# Text generation via REST (simplified paths)
+curl -X POST http://localhost:50008/generate_text \
   -H "Content-Type: application/json" \
   -d '{"prompt": "Hello", "context": {"userId": "test"}}'
+
+# Service health check via REST
+curl http://localhost:50008/health
+
+# Get available models
+curl http://localhost:50008/get_models
 
 # gRPC health check
 grpcurl -plaintext localhost:50005 grpc.health.v1.Health/Check
